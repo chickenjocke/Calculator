@@ -3,6 +3,10 @@ import subprocess
 
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"status": "Calculator backend is online!"}), 200
+
 @app.route('/solve', methods=['POST'])
 def solve_equation():
     data = request.json
@@ -27,7 +31,3 @@ def solve_equation():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({"status": "Calculator backend is online!"}), 200
