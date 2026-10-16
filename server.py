@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import subprocess
 
 app = Flask(__name__)
+CORS(app)  # This enables CORS for all routes so your frontend can talk to it!
 
 @app.route('/', methods=['GET'])
 def home():
