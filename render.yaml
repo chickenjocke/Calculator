@@ -2,6 +2,6 @@ services:
   - type: web
     name: math-unified-backend
     env: python
-    buildCommand: apt-get update && apt-get install -y g++ && pip install -r requirements.txt && g++ -O3 calculator_engine.cpp -o calculator_engine
+    buildCommand: pip install -r requirements.txt && g++ -O3 calculator_engine.cpp -o calculator_engine
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     plan: free
