@@ -23,7 +23,7 @@ def missing_number_sequence():
 def basic_addition():
     v1 = random.randint(12, 85)
     v2 = random.randint(2, 9)
-    return "Find the product using long multiplication steps:", f"  {v1}\n外部 x {v2}\n----", v1 * v2
+    return "Find the product using long multiplication steps:", f"  {v1}\n    x {v2}\n----", v1 * v2
 
 def basic_subtraction():
     dividend = random.randint(40, 99)
@@ -124,12 +124,15 @@ def play_game(level, difficulty):
         print("Option {}: {}".format(letter, choice))
 
     while True:
-        answer = input("").strip().upper()
-        if answer in letters:
+        try:
+            answer = input("").strip().upper()
+            if answer in letters:
+                break
+            print(f"Invalid response. Please type one of: {', '.join(letters)}")
+        except EOFError:
             break
-        print(f"Invalid response. Please type one of: {', '.join(letters)}")
 
-    selected_answer = choices[letters.index(answer)]
+    selected_answer = choices[letters.index(answer)] if 'answer' in locals() and answer in letters else None
     if str(selected_answer) == str(correct_answer):
         print("Correct!")
     else:
