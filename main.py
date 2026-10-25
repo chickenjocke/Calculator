@@ -4,6 +4,78 @@ import subprocess
 import os
 import random
 
+
+def _ensure_calculator_binary():
+    binary_path = "./calculator_engine"
+    if os.path.exists(binary_path):
+        return binary_path
+
+    if os.path.exists("calculator_engine.cpp"):
+        compile_res = subprocess.run(
+            ["g++", "-O3", "calculator_engine.cpp", "-o", binary_path],
+            capture_output=True,
+            text=True,
+        )
+        if compile_res.returncode != 0:
+            raise RuntimeError(f"Compilation failed: {compile_res.stderr}")
+        return binary_path
+
+    raise FileNotFoundError("Calculator engine binary/source missing.")
+
+
+def _render_ascii_graph(expression: str) -> str:
+    expression = (expression or "").strip()
+    if not expression:
+        return ""
+
+    try:
+        binary_path = _ensure_calculator_binary()
+        process = subprocess.run(
+            [binary_path],
+            input=expression + "\n",
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except Exception:
+        return expression
+
+    stdout = (process.stdout or "").strip()
+    if not stdout:
+        return expression
+
+    lines = stdout.splitlines()
+    graph_lines = []
+    started = False
+    for line in lines:
+        if "Graph (" in line:
+            started = True
+        if started:
+            graph_lines.append(line)
+
+    if graph_lines:
+        return "\n".join(graph_lines)
+    return stdout
+
+
+def _as_visual_element(visual):
+    if visual is None:
+        return ""
+
+    text = str(visual).strip()
+    if not text:
+        return ""
+
+    # Most graph prompts use a grph-prefixed spec and should be rendered by the C++ engine.
+    if "grph" in text.lower():
+        try:
+            return _render_ascii_graph(text)
+        except Exception:
+            return text
+
+    return text
+
+
 app = FastAPI(title="Unified Math Platform API (Calculator Engine & Question Matrix)")
 
 app.add_middleware(
@@ -41,6 +113,7 @@ for grade_key, (mod_name, attr_name) in modules_config.items():
     except Exception as e:
         print(f"Warning: Could not load module {mod_name}: {e}")
 
+
 @app.get("/")
 def home():
     return {
@@ -49,34 +122,36 @@ def home():
         "modules_loaded": len(GLOBAL_MODULE_CATALOG)
     }
 
+
 # --- Question Generator API Route ---
 @app.get("/api/question")
 def serve_distributed_question(grade: int, category: int, sub_difficulty: int):
     if grade not in GLOBAL_MODULE_CATALOG:
         raise HTTPException(status_code=404, detail=f"Grade curriculum tier {grade} not found or failed to load.")
-        
+
     target_router = GLOBAL_MODULE_CATALOG[grade]
-    
+
     if category not in target_router or sub_difficulty not in target_router[category]:
         raise HTTPException(status_code=404, detail="Targeted question math matrix index not found.")
-    
+
     question, visual, correct_answer = target_router[category][sub_difficulty]()
-    
+
     choices = [correct_answer]
     if isinstance(correct_answer, int):
         distractors = [v for v in range(max(0, correct_answer - 15), correct_answer + 16) if v != correct_answer]
         choices.extend(random.sample(distractors, min(3, len(distractors))))
     else:
         choices.extend(["Alternative Distractor X", "Alternative Distractor Y", "Alternative Distractor Z"])
-    
+
     random.shuffle(choices)
-    
+
     return {
         "question": question,
-        "visual": visual,
+        "visual": _as_visual_element(visual),
         "choices": [str(c) for c in choices],
         "correct_answer": str(correct_answer)
     }
+
 
 # --- C++ Calculator Solver API Route ---
 @app.post("/api/calculate")
@@ -84,15 +159,13 @@ def execute_calculator(payload: dict = Body(...)):
     expression = payload.get("expression", "")
     if not expression:
         raise HTTPException(status_code=400, detail="Expression cannot be empty.")
-    
-    binary_path = "./calculator_engine"
-    if not os.path.exists(binary_path):
-        if os.path.exists("calculator_engine.cpp"):
-            compile_res = subprocess.run(["g++", "-O3", "calculator_engine.cpp", "-o", binary_path], capture_output=True, text=True)
-            if compile_res.returncode != 0:
-                raise HTTPException(status_code=500, detail=f"Compilation failed: {compile_res.stderr}")
-        else:
-            raise HTTPException(status_code=500, detail="Calculator engine binary/source missing.")
+
+    try:
+        binary_path = _ensure_calculator_binary()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    except RuntimeError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
     try:
         process = subprocess.run(
