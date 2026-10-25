@@ -1,35 +1,71 @@
 import random
 
+
 def count_items_1_6():
     steps = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     idx = random.randint(2, 6)
     target = steps[idx]
     seq_str = [str(x) if i != idx else "___" for i, x in enumerate(steps[:7])]
-    return "What number is missing when counting by tens?", " ".join(seq_str), target
+    prompts = [
+        "What number is missing when counting by tens?",
+        "Fill in the blank while counting by tens.",
+        "Which number belongs in the empty spot?",
+        "What is the missing number in this tens pattern?"
+    ]
+    return random.choice(prompts), " ".join(seq_str), target
+
 
 def count_items_5_10():
     tens = random.randint(2, 6)
     ones = random.randint(1, 9)
     total = (tens * 10) + ones
     board = f"Blocks: {tens} bundles of 10 and {ones} single blocks."
-    return "What total number do these blocks show?", board, total
+    prompts = [
+        "What total number do these blocks show?",
+        "Count all the blocks to find the total.",
+        "How many blocks are there altogether?",
+        "What number is represented by these tens and ones?"
+    ]
+    return random.choice(prompts), board, total
+
 
 def missing_number_sequence():
     n1 = random.randint(11, 99)
     n2 = random.randint(11, 99)
     while n1 == n2:
         n2 = random.randint(11, 99)
-    return f"Which number is GREATER?\n1) {n1}  2) {n2}", "", max(n1, n2)
+    prompts = [
+        f"Which number is GREATER?\n1) {n1}  2) {n2}",
+        f"Compare the numbers. Which is bigger?\n1) {n1}  2) {n2}",
+        f"Which value is larger?\n1) {n1}  2) {n2}",
+        f"Pick the greater number.\n1) {n1}  2) {n2}"
+    ]
+    return random.choice(prompts), "", max(n1, n2)
+
 
 def basic_addition():
     v1 = random.randint(5, 12)
     v2 = random.randint(3, 8)
-    return "Solve the addition problem:", f"{v1} + {v2} = ____", v1 + v2
+    prompts = [
+        "Solve the addition problem:",
+        "Add the numbers together:",
+        "Find the sum:",
+        "What is the total of these numbers?"
+    ]
+    return random.choice(prompts), f"{v1} + {v2} = ____", v1 + v2
+
 
 def basic_subtraction():
     v1 = random.randint(11, 20)
     v2 = random.randint(4, 10)
-    return "Solve the subtraction problem:", f"{v1} - {v2} = ____", v1 - v2
+    prompts = [
+        "Solve the subtraction problem:",
+        "Subtract to find the difference:",
+        "What is the answer?",
+        "Find the result of this subtraction."
+    ]
+    return random.choice(prompts), f"{v1} - {v2} = ____", v1 - v2
+
 
 def compare_more():
     v1 = random.randint(4, 8)
@@ -37,45 +73,111 @@ def compare_more():
     use_plus = random.choice([True, False])
     if use_plus:
         display = f"{v1} ___ {v2} = {v1 + v2}\n1) +  2) -"
-        return "Which sign makes the equation true?", display, 1
+        prompts = [
+            "Which sign makes the equation true?",
+            "Choose the correct math symbol.",
+            "What operator belongs in the blank?",
+            "Which sign completes the equation?"
+        ]
+        return random.choice(prompts), display, 1
     else:
         display = f"{v1} ___ {v2} = {v1 - v2}\n1) +  2) -"
-        return "Which sign makes the equation true?", display, 2
+        prompts = [
+            "Which sign makes the equation true?",
+            "Choose the correct math symbol.",
+            "What operator belongs in the blank?",
+            "Which sign completes the equation?"
+        ]
+        return random.choice(prompts), display, 2
+
 
 def identify_sides():
     hour = random.randint(1, 12)
     minute = random.choice([0, 30])
     time_str = f"{hour}:00" if minute == 0 else f"{hour}:30"
     clock_desc = f"The short hand points at {hour}. The long hand points at {'12' if minute == 0 else '6'}."
-    return "What time does this clock show?", clock_desc, time_str
+    prompts = [
+        "What time does this clock show?",
+        "Read the clock. What time is it?",
+        "Which time is shown by the clock?",
+        "Tell the time shown on the clock."
+    ]
+    return random.choice(prompts), clock_desc, time_str
+
 
 def count_specific_shape():
-    prompt = "If you cut a pizza into 2 equal pieces, what is 1 piece called?\n1) a half  2) a quarter"
-    return prompt, "", 1
+    prompt_variants = [
+        "If you cut a pizza into 2 equal pieces, what is 1 piece called?\n1) a half  2) a quarter",
+        "A pizza is cut into 2 equal parts. What is one of the pieces called?\n1) a half  2) a quarter",
+        "If a pizza is divided into 2 equal slices, what is one slice called?\n1) a half  2) a quarter",
+        "One piece of a pizza cut into 2 equal parts is called what?\n1) a half  2) a quarter"
+    ]
+    return random.choice(prompt_variants), "", 1
+
 
 def match_3d_shape():
-    prompt = "How many equal pieces make up a whole item cut into QUARTERS?", "", 4
+    prompt_variants = [
+        "How many equal pieces make up a whole item cut into QUARTERS?",
+        "A whole object is cut into quarters. How many equal pieces are there?",
+        "How many parts make a whole when it is divided into quarters?",
+        "If something is split into quarters, how many equal parts are there?"
+    ]
+    return random.choice(prompt_variants), "", 4
+
 
 def ab_pattern():
     shape = random.choice(["pentagon", "hexagon", "rectangle"])
     corners = {"pentagon": 5, "hexagon": 6, "rectangle": 4}[shape]
-    return f"How many corners does a {shape} have?", "", corners
+    prompt_variants = [
+        f"How many corners does a {shape} have?",
+        f"Count the corners of a {shape}. How many are there?",
+        f"A {shape} has how many corners?",
+        f"How many vertices does a {shape} have?"
+    ]
+    return random.choice(prompt_variants), "", corners
+
 
 def size_sorting():
-    prompt = "Which trait tells us an object is definitely a TRIANGLE?\n1) It is red  2) It is small  3) It has 3 straight sides"
-    return prompt, "", 3
+    prompt_variants = [
+        "Which trait tells us an object is definitely a TRIANGLE?\n1) It is red  2) It is small  3) It has 3 straight sides",
+        "Choose the feature that makes a shape a triangle.\n1) It is red  2) It is small  3) It has 3 straight sides",
+        "What is a triangle's identifying feature?\n1) It is red  2) It is small  3) It has 3 straight sides",
+        "Which choice best describes a triangle?\n1) It is red  2) It is small  3) It has 3 straight sides"
+    ]
+    return random.choice(prompt_variants), "", 3
+
 
 def attribute_matching():
-    prompt = "If you put two equal triangles side-by-side along their flat edges, what shape can you make?\n1) A circle  2) A square  3) A cone"
-    return prompt, "", 2
+    prompt_variants = [
+        "If you put two equal triangles side-by-side along their flat edges, what shape can you make?\n1) A circle  2) A square  3) A cone",
+        "Two equal triangles joined along a flat side form what shape?\n1) A circle  2) A square  3) A cone",
+        "What shape is made by joining two equal triangles side by side?\n1) A circle  2) A square  3) A cone",
+        "When two equal triangles are put together flat edge to flat edge, which shape appears?\n1) A circle  2) A square  3) A cone"
+    ]
+    return random.choice(prompt_variants), "", 2
+
 
 def compare_height():
-    prompt = "Object A is longer than Object B. Object B is longer than Object C. Which is the longest?\n1) Object A  2) Object B  3) Object C", "", 1
+    prompt_variants = [
+        "Object A is longer than Object B. Object B is longer than Object C. Which is the longest?\n1) Object A  2) Object B  3) Object C",
+        "Look at the ordering: A > B > C. Which object is longest?\n1) Object A  2) Object B  3) Object C",
+        "Object B is shorter than A and C. Which is the longest?\n1) Object A  2) Object B  3) Object C",
+        "Use the comparison: A is longer than B, and B is longer than C. Which is longest?\n1) Object A  2) Object B  3) Object C"
+    ]
+    return random.choice(prompt_variants), "", 1
+
 
 def graph_reading():
     votes = random.randint(4, 8)
     tally_str = "".join(["|" for _ in range(votes)])
-    return "How many votes does this tally show?", f"Votes: {tally_str}", votes
+    prompts = [
+        "How many votes does this tally show?",
+        "Count the tallies. What is the total number of votes?",
+        "How many marks are in the tally?",
+        "What number does this tally represent?"
+    ]
+    return random.choice(prompts), f"Votes: {tally_str}", votes
+
 
 def weight_intuition():
     cats = random.randint(3, 6)
@@ -83,7 +185,14 @@ def weight_intuition():
     while cats == rabbits:
         rabbits = random.randint(3, 6)
     graph = f"Cats: {'■'*cats}\nRabbits: {'■'*rabbits}"
-    return "Which pet got MORE total votes?\n1) Cats  2) Rabbits", graph, 1 if cats > rabbits else 2
+    prompts = [
+        "Which pet got MORE total votes?\n1) Cats  2) Rabbits",
+        "Compare the totals. Which group has more?\n1) Cats  2) Rabbits",
+        "Which pet was chosen more often?\n1) Cats  2) Rabbits",
+        "Look at the chart. Which group has the larger total?\n1) Cats  2) Rabbits"
+    ]
+    return random.choice(prompts), graph, 1 if cats > rabbits else 2
+
 
 MATH_ROUTER = {
     1: {1: count_items_1_6, 2: count_items_5_10, 3: missing_number_sequence},
