@@ -13,7 +13,7 @@ def count_items_1_6():
         "What is the missing number in this tens pattern?"
     ]
     return random.choice(prompts), " ".join(seq_str), target
-
+ 
 
 def count_items_5_10():
     tens = random.randint(2, 6)
