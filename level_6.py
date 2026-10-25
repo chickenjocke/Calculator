@@ -1,101 +1,189 @@
 import random
 
+
+def _pick_variant(options):
+    return random.choice(options)
+
+
 def count_items_1_6():
-    n1 = random.randint(2, 5)
-    n2 = random.randint(6, 9)
-    mult = random.randint(2, 4)
-    visual = f"Group A has {n1} items, Group B has {n2} items."
-    return f"The ratio of items is {n1}:{n2}. If Group A scales up to {n1 * mult} items, how many items will Group B have?", visual, n2 * mult
+    v1 = random.randint(-15, -2)
+    v2 = random.randint(3, 15)
+    prompt = _pick_variant([
+        "Solve the integer addition problem:",
+        "Add the integers together:",
+        "Find the sum of the numbers:",
+        "What is the result of this addition?"
+    ])
+    return prompt, f"{v1} + {v2} = ____", v1 + v2
+
 
 def count_items_5_10():
-    whole = random.choice([20, 40, 50, 100, 200])
-    pct = random.choice([10, 25, 50, 75, 90])
-    ans = int(whole * (pct / 100))
-    return f"What is {pct}% of {whole}?", "", ans
+    v1 = random.randint(-10, -2)
+    v2 = random.randint(-8, -2)
+    prompt = _pick_variant([
+        "Solve the integer multiplication problem:",
+        "Multiply the integers:",
+        "Find the product:",
+        "What is the result of this multiplication?"
+    ])
+    return prompt, f"({v1}) x ({v2}) = ____", v1 * v2
+
 
 def missing_number_sequence():
-    ans = random.randint(3, 15)
-    coef = random.randint(2, 6)
-    prod = ans * coef
-    return f"Solve for the missing value: {coef}x = {prod}", "", ans
+    item_cost = random.randint(15, 45)
+    markup_pct = random.choice([10, 20, 50])
+    ans = int(item_cost * (1 + markup_pct / 100))
+    visual = f"Wholesale Price = ${item_cost}, Store Markup = {markup_pct}%"
+    prompt = _pick_variant([
+        "Calculate the final retail selling price of the item after markup:",
+        "Find the selling price after the markup:",
+        "What is the item’s price after the markup?",
+        "Compute the final retail price."
+    ])
+    return prompt, visual, ans
+
 
 def basic_addition():
-    ans = random.randint(5, 20)
-    subtrahend = random.randint(3, 15)
-    total = ans + subtrahend
-    return f"Solve for the missing value: x + {subtrahend} = {total}", "", ans
+    ans = random.randint(2, 8)
+    coef = random.randint(2, 5)
+    const = random.randint(3, 12)
+    total = (coef * ans) + const
+    prompt = _pick_variant([
+        f"Solve the two-step linear equation for x: {coef}x + {const} = {total}",
+        f"Find x in: {coef}x + {const} = {total}",
+        f"Solve for x in this equation: {coef}x + {const} = {total}",
+        f"What value of x makes the equation true? {coef}x + {const} = {total}"
+    ])
+    return prompt, "", ans
+
 
 def basic_subtraction():
-    ans = random.randint(5, 20)
-    subtrahend = random.randint(3, 15)
-    return f"Solve for the missing value: x - {subtrahend} = {ans}", "", ans + subtrahend
+    ans = random.randint(3, 9)
+    coef = random.randint(2, 5)
+    const = random.randint(2, 10)
+    total = (coef * ans) - const
+    prompt = _pick_variant([
+        f"Solve the two-step linear equation for x: {coef}x - {const} = {total}",
+        f"Find x in: {coef}x - {const} = {total}",
+        f"Solve for x in this equation: {coef}x - {const} = {total}",
+        f"What value of x makes the equation true? {coef}x - {const} = {total}"
+    ])
+    return prompt, "", ans
+
 
 def compare_more():
-    v1 = random.randint(-15, -1)
-    v2 = random.randint(-15, -1)
-    while v1 == v2:
-        v2 = random.randint(-15, -1)
-    return f"Which negative value statement is true?\n1) {v1} > {v2}  2) {v1} < {v2}", "", 1 if v1 > v2 else 2
+    v1 = random.randint(2, 6)
+    ans = random.randint(2, 6)
+    total = v1 * ans
+    prompt = _pick_variant([
+        f"Solve the inequality structure calculation: {v1}x > {total}\n1) x > {ans}  2) x < {ans}",
+        f"Which inequality is true?\n1) x > {ans}  2) x < {ans}",
+        f"Choose the correct solution statement.\n1) x > {ans}  2) x < {ans}",
+        f"Interpret the inequality: {v1}x > {total}.\n1) x > {ans}  2) x < {ans}"
+    ])
+    return prompt, "", 1
+
 
 def identify_sides():
-    x = random.randint(1, 9)
-    y = random.randint(1, 9)
-    quad = random.randint(1, 4)
-    mx = x if quad in [1, 4] else -x
-    my = y if quad in [1, 2] else -y
-    return f"In which quadrant does the coordinate point ({mx}, {my}) lie?\n1) Quadrant I  2) Quadrant II  3) Quadrant III  4) Quadrant IV", "", quad
+    radius = random.choice([7, 14, 21])
+    ans = int(2 * (22 / 7) * radius)
+    prompt = _pick_variant([
+        "Find the total circumference distance of a circular frame boundary:",
+        "What is the circumference of this circle?",
+        "Compute the circumference of the circular object:",
+        "Determine the distance around the circle."
+    ])
+    return prompt, f"Radius = {radius} cm (Use pi = 22/7)", ans
+
 
 def count_specific_shape():
-    fixed = random.randint(-9, 9)
-    v1 = random.randint(1, 8)
-    v2 = random.randint(1, 8)
-    while v1 == v2:
-        v2 = random.randint(1, 8)
-    use_vertical = random.choice([True, False])
-    if use_vertical:
-        visual = f"Point A: ({fixed}, {v1})\nPoint B: ({fixed}, {-v2})"
-    else:
-        visual = f"Point A: ({v1}, {fixed})\nPoint B: ({-v2}, {fixed})"
-    return "Find the total distance between Point A and Point B across the axis line:", visual, v1 + v2
+    radius = random.choice([7, 14, 21])
+    ans = int((22 / 7) * radius * radius)
+    prompt = _pick_variant([
+        "Find the complete surface area coverage of a circular element layout:",
+        "What is the area of the circle?",
+        "Compute the area of the circle using the given radius:",
+        "Find the total area of this circular region."
+    ])
+    return prompt, f"Radius = {radius} cm (Use pi = 22/7)", ans
+
 
 def match_3d_shape():
-    v1 = random.randint(3, 8)
-    v2 = random.randint(3, 8)
-    return "Find the missing structural variable calculation: Area of a triangle = (base x height) / 2", f"Base = {v1} cm, Height = {v2} cm", (v1 * v2) // 2
+    v1 = random.choice([30, 45, 60, 90])
+    prompt = _pick_variant([
+        f"Two angles are complementary. If one angle measures {v1} degrees, what is the measure of its complement?",
+        f"A complementary angle pair includes {v1} degrees. What is the other angle?",
+        f"Find the complement of an angle measuring {v1} degrees.",
+        f"What angle adds to {v1} degrees to make a right angle?"
+    ])
+    return prompt, "", 90 - v1
+
 
 def ab_pattern():
-    v1 = random.randint(4, 9)
-    v2 = random.randint(3, 6)
-    v3 = random.randint(2, 5)
-    total = (v1 * v2 * 2) + (v1 * v3 * 2) + (v2 * v3 * 2)
-    visual = f"Length = {v1} cm, Width = {v2} cm, Height = {v3} cm"
-    return "Find the total surface area of a rectangular prism with these dimensions:", visual, total
+    v1 = random.choice([30, 60, 90, 120])
+    prompt = _pick_variant([
+        f"Two angles form a linear pair and are supplementary. If one angle measures {v1} degrees, what is the measure of its supplement?",
+        f"A supplementary angle pair includes {v1} degrees. What is the other angle?",
+        f"Find the supplement of an angle measuring {v1} degrees.",
+        f"What angle adds to {v1} degrees to make a straight line?"
+    ])
+    return prompt, "", 180 - v1
+
 
 def size_sorting():
-    nums = [random.randint(1, 10) for _ in range(5)]
-    ans = sum(nums) // 5
-    visual = "Data points: " + ", ".join(map(str, nums))
-    return "Find the mean (average) value calculation for this dataset:", visual, ans
+    total_marbles = 20
+    red_marbles = random.randint(3, 8)
+    prompt = _pick_variant([
+        f"A bag contains {total_marbles} total items. If {red_marbles} of them are red, what is the probability of pulling a red item at random?\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0",
+        f"What is the probability of drawing a red marble?\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0",
+        f"Choose the correct probability.\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0",
+        f"A bag has {total_marbles} marbles with {red_marbles} red. Probability of red?\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0"
+    ])
+    return prompt, "", 1
+
 
 def attribute_matching():
-    nums = sorted([random.randint(1, 20) for _ in range(5)])
-    ans = nums[2]
-    visual = "Data points: " + ", ".join(map(str, nums))
-    return "Find the median value calculation for this sorted dataset:", visual, ans
+    prompt = _pick_variant([
+        "Which tracking option defines a sample population configuration that accurately represents an entire school?\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria",
+        "Which sampling method best represents the whole school?\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria",
+        "Choose the unbiased sample.\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria",
+        "Which option is a representative sample of the student body?\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria"
+    ])
+    return prompt, "", 1
+
 
 def compare_height():
-    nums = [random.randint(5, 25) for _ in range(5)]
-    ans = max(nums) - min(nums)
-    visual = "Data points: " + ", ".join(map(str, nums))
-    return "Find the statistical range variation metric (Maximum - Minimum) for this dataset:", visual, ans
+    v1 = random.randint(5, 15)
+    v2 = random.randint(2, 4)
+    prompt = _pick_variant([
+        f"A map scale uses 1 inch to represent {v1} real miles. If a road measures {v2} inches on the map grid, how long is it in reality?",
+        f"Use the scale to find the real distance for {v2} inches on the map.",
+        f"How many miles is a road that measures {v2} inches on a {v1}-mile-per-inch map?",
+        f"Determine the real length of a road shown as {v2} inches on the map."
+    ])
+    return prompt, "", v1 * v2
+
 
 def graph_reading():
-    v = random.randint(2, 10)
-    return f"Evaluate the absolute numerical value magnitude: |-{v}| = ____", "", v
+    v1 = random.randint(2, 6)
+    prompt = _pick_variant([
+        f"Identify the constant of proportionality unit rate from the direct equation framework: y = {v1}x",
+        f"What is the constant of proportionality in y = {v1}x?",
+        f"Find the unit rate for the equation y = {v1}x.",
+        f"Determine the constant of proportionality in this equation."
+    ])
+    return prompt, "", v1
+
 
 def weight_intuition():
-    prompt = "Which choice is a statistical question that anticipates variability in the answers?\n1) How old am I?\n2) How many pets do the students in my school have?\n3) How many sides does a triangle have?"
-    return prompt, "", 2
+    prompt = _pick_variant([
+        "If a coin is tossed 1000 times, which outcome projection aligns best with probability data standards?\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads",
+        "What is the most likely result after 1000 coin tosses?\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads",
+        "Which outcome is best supported by probability?\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads",
+        "Choose the most reasonable result for 1000 tosses.\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads"
+    ])
+    return prompt, "", 1
+
 
 MATH_ROUTER = {
     1: {1: count_items_1_6, 2: count_items_5_10, 3: missing_number_sequence},
