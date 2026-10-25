@@ -5,190 +5,184 @@ def _pick_variant(options):
     return random.choice(options)
 
 
-input_unpack = input("").split()
-grade4_level = int(input_unpack[0])
-grade4_difficulty = int(input_unpack[1])
-
-
 def count_items_1_6():
-    v1 = random.randint(1000, 9999)
-    v2 = random.randint(1000, 9999)
+    v1 = random.randint(-15, -2)
+    v2 = random.randint(3, 15)
     prompt = _pick_variant([
-        "Solve the addition problem:",
-        "Add these numbers together:",
-        "Find the sum of the values:",
-        "What is the total of these two numbers?"
+        "Solve the integer addition problem:",
+        "Add the integers together:",
+        "Find the sum of the numbers:",
+        "What is the result of this addition?"
     ])
-    return prompt, f"  {v1}\n+ {v2}\n------", v1 + v2
+    return prompt, f"{v1} + {v2} = ____", v1 + v2
 
 
 def count_items_5_10():
-    v1 = random.randint(5000, 9999)
-    v2 = random.randint(1000, 4999)
+    v1 = random.randint(-10, -2)
+    v2 = random.randint(-8, -2)
     prompt = _pick_variant([
-        "Solve the subtraction problem:",
-        "Subtract to find the difference:",
-        "Find the result of this subtraction:",
-        "What is the difference between these numbers?"
+        "Solve the integer multiplication problem:",
+        "Multiply the integers:",
+        "Find the product:",
+        "What is the result of this multiplication?"
     ])
-    return prompt, f"  {v1}\n- {v2}\n------", v1 - v2
+    return prompt, f"({v1}) x ({v2}) = ____", v1 * v2
 
 
 def missing_number_sequence():
-    v1 = random.randint(10, 99)
-    v2 = random.choice([10, 100, 1000])
+    item_cost = random.randint(15, 45)
+    markup_pct = random.choice([10, 20, 50])
+    ans = int(item_cost * (1 + markup_pct / 100))
+    visual = f"Wholesale Price = ${item_cost}, Store Markup = {markup_pct}%"
     prompt = _pick_variant([
-        "Multiply the tracking numbers:",
-        "Find the product of the numbers:",
-        "Solve this multiplication problem:",
-        "What is the result when multiplying these values?"
+        "Calculate the final retail selling price of the item after markup:",
+        "Find the selling price after the markup:",
+        "What is the item’s price after the markup?",
+        "Compute the final retail price."
     ])
-    return prompt, f"{v1} x {v2} = ____", v1 * v2
+    return prompt, visual, ans
 
 
 def basic_addition():
-    v1 = random.randint(12, 85)
-    v2 = random.randint(2, 9)
+    ans = random.randint(2, 8)
+    coef = random.randint(2, 5)
+    const = random.randint(3, 12)
+    total = (coef * ans) + const
     prompt = _pick_variant([
-        "Find the product using long multiplication steps:",
-        "Multiply using the standard algorithm:",
-        "Compute the product:",
-        "What is the result of this multiplication?"
+        f"Solve the two-step linear equation for x: {coef}x + {const} = {total}",
+        f"Find x in: {coef}x + {const} = {total}",
+        f"Solve for x in this equation: {coef}x + {const} = {total}",
+        f"What value of x makes the equation true? {coef}x + {const} = {total}"
     ])
-    return prompt, f"  {v1}\n    x {v2}\n----", v1 * v2
+    return prompt, "", ans
 
 
 def basic_subtraction():
-    dividend = random.randint(40, 99)
-    divisor = random.randint(3, 7)
-    quotient = dividend // divisor
+    ans = random.randint(3, 9)
+    coef = random.randint(2, 5)
+    const = random.randint(2, 10)
+    total = (coef * ans) - const
     prompt = _pick_variant([
-        "Divide the values and find the whole quotient remainder number:",
-        "How much is the quotient of this division?",
-        "Solve the division and give the whole-number result:",
-        "What is the quotient of these numbers?"
+        f"Solve the two-step linear equation for x: {coef}x - {const} = {total}",
+        f"Find x in: {coef}x - {const} = {total}",
+        f"Solve for x in this equation: {coef}x - {const} = {total}",
+        f"What value of x makes the equation true? {coef}x - {const} = {total}"
     ])
-    return prompt, f"{dividend} ÷ {divisor} = ____", quotient
+    return prompt, "", ans
 
 
 def compare_more():
-    v1 = random.randint(100, 999)
-    v2 = random.randint(100, 999)
-    while v1 == v2:
-        v2 = random.randint(100, 999)
+    v1 = random.randint(2, 6)
+    ans = random.randint(2, 6)
+    total = v1 * ans
     prompt = _pick_variant([
-        f"Which statement is correct?\n1) {v1} > {v2}  2) {v1} < {v2}",
-        f"Compare the values. Which statement is true?\n1) {v1} > {v2}  2) {v1} < {v2}",
-        f"Pick the correct comparison.\n1) {v1} > {v2}  2) {v1} < {v2}",
-        f"Which is correct?\n1) {v1} > {v2}  2) {v1} < {v2}"
+        f"Solve the inequality structure calculation: {v1}x > {total}\n1) x > {ans}  2) x < {ans}",
+        f"Which inequality is true?\n1) x > {ans}  2) x < {ans}",
+        f"Choose the correct solution statement.\n1) x > {ans}  2) x < {ans}",
+        f"Interpret the inequality: {v1}x > {total}.\n1) x > {ans}  2) x < {ans}"
     ])
-    return prompt, "", 1 if v1 > v2 else 2
+    return prompt, "", 1
 
 
 def identify_sides():
-    d = random.choice([10, 100])
-    n = random.randint(1, d - 1)
-    ans = round(n / d, 2)
+    radius = random.choice([7, 14, 21])
+    ans = int(2 * (22 / 7) * radius)
     prompt = _pick_variant([
-        f"Convert the fraction value to a dynamic decimal notation:",
-        f"Write the fraction as a decimal:",
-        f"Change this fraction to a decimal:",
-        f"What decimal is equivalent to {n}/{d}?"
+        "Find the total circumference distance of a circular frame boundary:",
+        "What is the circumference of this circle?",
+        "Compute the circumference of the circular object:",
+        "Determine the distance around the circle."
     ])
-    return prompt, f"{n}/{d} = ____", str(ans)
+    return prompt, f"Radius = {radius} cm (Use pi = 22/7)", ans
 
 
 def count_specific_shape():
-    d = random.choice([5, 6, 8, 10])
-    n1 = random.randint(1, d - 2)
-    n2 = random.randint(1, d - n1 - 1)
+    radius = random.choice([7, 14, 21])
+    ans = int((22 / 7) * radius * radius)
     prompt = _pick_variant([
-        "Add the like-denominator fractions together:",
-        "Find the sum of these fractions:",
-        "What is the result of this addition?",
-        "Compute the total of the two fractions."
+        "Find the complete surface area coverage of a circular element layout:",
+        "What is the area of the circle?",
+        "Compute the area of the circle using the given radius:",
+        "Find the total area of this circular region."
     ])
-    return prompt, f"{n1}/{d} + {n2}/{d} = ____", f"{n1+n2}/{d}"
+    return prompt, f"Radius = {radius} cm (Use pi = 22/7)", ans
 
 
 def match_3d_shape():
-    d = random.choice([5, 6, 8, 10])
-    n1 = random.randint(3, d - 1)
-    n2 = random.randint(1, n1 - 1)
+    v1 = random.choice([30, 45, 60, 90])
     prompt = _pick_variant([
-        "Subtract the tracking fraction path elements:",
-        "Find the difference of these fractions:",
-        "Compute the subtraction result:",
-        "What is the value of this fraction subtraction?"
+        f"Two angles are complementary. If one angle measures {v1} degrees, what is the measure of its complement?",
+        f"A complementary angle pair includes {v1} degrees. What is the other angle?",
+        f"Find the complement of an angle measuring {v1} degrees.",
+        f"What angle adds to {v1} degrees to make a right angle?"
     ])
-    return prompt, f"{n1}/{d} - {n2}/{d} = ____", f"{n1-n2}/{d}"
+    return prompt, "", 90 - v1
 
 
 def ab_pattern():
-    v = random.choice([30, 45, 60, 90, 120, 135, 150])
-    cat = "Acute" if v < 90 else ("Right" if v == 90 else "Obtuse")
+    v1 = random.choice([30, 60, 90, 120])
     prompt = _pick_variant([
-        f"An angle tracking measurement is {v} degrees. What type of angle is it?\n1) Acute  2) Right  3) Obtuse",
-        f"Classify this angle: {v} degrees.\n1) Acute  2) Right  3) Obtuse",
-        f"What kind of angle measures {v} degrees?\n1) Acute  2) Right  3) Obtuse",
-        f"Determine the angle type for {v} degrees.\n1) Acute  2) Right  3) Obtuse"
+        f"Two angles form a linear pair and are supplementary. If one angle measures {v1} degrees, what is the measure of its supplement?",
+        f"A supplementary angle pair includes {v1} degrees. What is the other angle?",
+        f"Find the supplement of an angle measuring {v1} degrees.",
+        f"What angle adds to {v1} degrees to make a straight line?"
     ])
-    return prompt, "", 1 if cat == "Acute" else (2 if cat == "Right" else 3)
+    return prompt, "", 180 - v1
 
 
 def size_sorting():
+    total_marbles = 20
+    red_marbles = random.randint(3, 8)
     prompt = _pick_variant([
-        "Which geometric term describes a straight path that starts at one endpoint and goes on forever in one direction?\n1) Line  2) Ray  3) Segment",
-        "Choose the correct geometric term.\n1) Line  2) Ray  3) Segment",
-        "Which option is a ray?\n1) Line  2) Ray  3) Segment",
-        "A line that begins at one endpoint and continues forever in one direction is called: \n1) Line  2) Ray  3) Segment"
+        f"A bag contains {total_marbles} total items. If {red_marbles} of them are red, what is the probability of pulling a red item at random?\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0",
+        f"What is the probability of drawing a red marble?\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0",
+        f"Choose the correct probability.\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0",
+        f"A bag has {total_marbles} marbles with {red_marbles} red. Probability of red?\n1) {red_marbles}/{total_marbles}  2) 1/2  3) 0"
     ])
-    return prompt, "", 2
+    return prompt, "", 1
 
 
 def attribute_matching():
-    side = random.randint(3, 12)
     prompt = _pick_variant([
-        "Find the total perimeter length of a square configuration if one side length equals:",
-        "What is the perimeter of a square with side length:",
-        "A square has side length. What is the perimeter?",
-        "Compute the perimeter of the square."
+        "Which tracking option defines a sample population configuration that accurately represents an entire school?\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria",
+        "Which sampling method best represents the whole school?\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria",
+        "Choose the unbiased sample.\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria",
+        "Which option is a representative sample of the student body?\n1) Every 5th student entering the school building\n2) Only members of the basketball team\n3) The first 20 students in the cafeteria"
     ])
-    return prompt, f"Side = {side} cm", side * 4
+    return prompt, "", 1
 
 
 def compare_height():
-    v1 = random.randint(2, 8)
+    v1 = random.randint(5, 15)
+    v2 = random.randint(2, 4)
     prompt = _pick_variant([
-        f"Convert the measurement unit scale system: How many ounces are in {v1} pounds?",
-        f"How many ounces are in {v1} pounds?",
-        f"Change {v1} pounds to ounces.",
-        f"Use the fact that 1 pound = 16 ounces. What is {v1} pounds in ounces?"
+        f"A map scale uses 1 inch to represent {v1} real miles. If a road measures {v2} inches on the map grid, how long is it in reality?",
+        f"Use the scale to find the real distance for {v2} inches on the map.",
+        f"How many miles is a road that measures {v2} inches on a {v1}-mile-per-inch map?",
+        f"Determine the real length of a road shown as {v2} inches on the map."
     ])
-    return prompt, "Hint: 1 pound = 16 ounces", v1 * 16
+    return prompt, "", v1 * v2
 
 
 def graph_reading():
     v1 = random.randint(2, 6)
     prompt = _pick_variant([
-        f"Convert the geometric length units: How many feet are in {v1} yards?",
-        f"How many feet is {v1} yards?",
-        f"Use 1 yard = 3 feet. What is {v1} yards in feet?",
-        f"Change {v1} yards to feet."
+        f"Identify the constant of proportionality unit rate from the direct equation framework: y = {v1}x",
+        f"What is the constant of proportionality in y = {v1}x?",
+        f"Find the unit rate for the equation y = {v1}x.",
+        f"Determine the constant of proportionality in this equation."
     ])
-    return prompt, "Hint: 1 yard = 3 feet", v1 * 3
+    return prompt, "", v1
 
 
 def weight_intuition():
-    length = random.randint(5, 12)
-    width = random.randint(3, 8)
     prompt = _pick_variant([
-        "Find the total geometric area boundaries value of a rectangle element frame:",
-        "What is the area of this rectangle?",
-        "Calculate the area using the given dimensions:",
-        "Find the rectangle area with the listed length and width."
+        "If a coin is tossed 1000 times, which outcome projection aligns best with probability data standards?\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads",
+        "What is the most likely result after 1000 coin tosses?\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads",
+        "Which outcome is best supported by probability?\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads",
+        "Choose the most reasonable result for 1000 tosses.\n1) Close to 500 heads\n2) Exactly 1000 heads\n3) Exactly 0 heads"
     ])
-    return prompt, f"Length = {length} meters, Width = {width} meters", length * width
+    return prompt, "", 1
 
 
 MATH_ROUTER = {
@@ -221,29 +215,29 @@ def play_game(level, difficulty):
         choices.extend(["Option Variant X", "Option Variant Y", "Option Variant Z"])
         choices = list(set(choices))[:4]
         if correct_answer not in choices:
-            choices = correct_answer
+            choices.append(correct_answer)
 
     random.shuffle(choices)
     letters = ["A", "B", "C", "D"][:len(choices)]
 
     print("\nChoices:")
     for letter, choice in zip(letters, choices):
-        print("Option {}: {}".format(letter, choice))
+        print(f"Option {letter}: {choice}")
 
     while True:
         try:
-            answer = input("").strip().upper()
+            answer = input().strip().upper()
             if answer in letters:
                 break
             print(f"Invalid response. Please type one of: {', '.join(letters)}")
         except EOFError:
-            break
+            print("Input closed. Exiting question.")
+            return None
 
-    selected_answer = choices[letters.index(answer)] if 'answer' in locals() and answer in letters else None
+    selected_answer = choices[letters.index(answer)]
     if str(selected_answer) == str(correct_answer):
         print("Correct!")
     else:
         print(f"You did not answer correctly. The answer was {correct_answer}.")
 
-
-play_game(level=grade4_level, difficulty=grade4_difficulty)
+    return selected_answer
