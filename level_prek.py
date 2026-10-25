@@ -145,25 +145,25 @@ def pk_procedural_geometry_sides() -> Tuple[str, str, int]:
     
     visual_token = generate_shapes_frame = generate_specular_shapes(1, fixed_shape=target_shape)
     def pk_procedural_filter_count() -> Tuple[str, str, int]:
-    """
-    Spawns mixed geometric objects and requires counting only a specific shape profile.
-    """
-    target_shape = random.choice(["circle", "square", "triangle"])
-    target_count = random.randint(1, 4)
-    distractor_count = random.randint(1, 3)
-    
-    # Generate list array of shapes matching requested counts
-    items_list = [generate_specular_shapes(1, fixed_shape=target_shape) for _ in range(target_count)]
-    other_pool = [s for s in ["circle", "square", "triangle"] if s != target_shape]
-    distractor_shape = random.choice(other_pool)
-    items_list += [generate_specular_shapes(1, fixed_shape=distractor_shape) for _ in range(distractor_count)]
-    
-    random.shuffle(items_list)
-    canvas_output = "   ".join(items_list)
-    prompt = f"Look at the mixed collection: {canvas_output}. Search closely! How many {target_shape}s can you find in total?"
-    
-    engine_validation = query_cpp_solver(f"{target_count}")
-    return prompt, canvas_output, int(engine_validation)
+        """
+        Spawns mixed geometric objects and requires counting only a specific shape profile.
+        """
+        target_shape = random.choice(["circle", "square", "triangle"])
+        target_count = random.randint(1, 4)
+        distractor_count = random.randint(1, 3)
+        
+        # Generate list array of shapes matching requested counts
+        items_list = [generate_specular_shapes(1, fixed_shape=target_shape) for _ in range(target_count)]
+        other_pool = [s for s in ["circle", "square", "triangle"] if s != target_shape]
+        distractor_shape = random.choice(other_pool)
+        items_list += [generate_specular_shapes(1, fixed_shape=distractor_shape) for _ in range(distractor_count)]
+        
+        random.shuffle(items_list)
+        canvas_output = "   ".join(items_list)
+        prompt = f"Look at the mixed collection: {canvas_output}. Search closely! How many {target_shape}s can you find in total?"
+        
+        engine_validation = query_cpp_solver(f"{target_count}")
+        return prompt, canvas_output, int(engine_validation)
 
 def pk_procedural_dimensional_comparison() -> Tuple[str, str, int]:
     """
